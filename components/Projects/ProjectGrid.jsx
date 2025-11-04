@@ -195,7 +195,7 @@ export default async function ProjectGrid({ userRole }) {
   const projects = await getProjects();
 
   // Public folder se direct image paths
-  const projectImages = ["/TaskZone.png", "/ChatApp.png", "/Creditsplit.png"];
+  const projectImages = ["/TaskZone.png", "/ChatApp.png", "/CreditSplit.png"];
 
   // Default projects agar koi data nahi hai
   const displayProjects = projects;
