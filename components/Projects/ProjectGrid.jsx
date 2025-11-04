@@ -1,75 +1,38 @@
-"use client";
-import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import ChatApp from "../../public/ChatApp.png";
 import Creditsplit from "../../public/Creditsplit.png";
 import TaskZone from "../../public/TaskZone.png";
 import Image from "next/image";
+import ProjectFilters from "./ProjectFilters";
+import ProjectAdminPanel from "./ProjectAdminPanel";
 
-export default function ProjectGrid({ userRole }) {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState("all");
+async function getProjects() {
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false });
 
+    if (error) {
+      console.error("Error fetching projects:", error);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return [];
+  }
+}
+
+export default async function ProjectGrid({ userRole }) {
+  const projects = await getProjects();
+
+  // Project images array
   const projectImages = [TaskZone, ChatApp, Creditsplit];
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("projects")
-          .select("*")
-          .order("created_at", { ascending: false });
-
-        if (error) {
-          console.error("Error fetching projects:", error);
-          return;
-        }
-
-        if (data) {
-          setProjects(data);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContent();
-  }, []);
 
   // Default projects agar koi data nahi hai
   const displayProjects = projects;
-
-  // Categories filter
-  const categories = [
-    { id: "all", name: "All Projects" },
-    { id: "web", name: "Web Development" },
-    { id: "mobile", name: "Mobile Apps" },
-  ];
-
-  const filteredProjects =
-    activeFilter === "all"
-      ? displayProjects
-      : displayProjects.filter((project) => project.category === activeFilter);
-
-  if (loading) {
-    return (
-      <section id="projects" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">
-            My Projects
-          </h2>
-          <p className="text-lg text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Loading amazing projects...
-          </p>
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section
@@ -87,27 +50,13 @@ export default function ProjectGrid({ userRole }) {
             development, mobile apps, and open-source contributions.
           </p>
 
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveFilter(category.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                  activeFilter === category.id
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 shadow-md"
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
+          {/* Client-side Filters */}
+          <ProjectFilters />
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid - Server rendered */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => {
+          {displayProjects.map((project, index) => {
             // Har project ke liye different image select karo
             const projectImage = projectImages[index % projectImages.length];
 
@@ -115,29 +64,24 @@ export default function ProjectGrid({ userRole }) {
               <div
                 key={project.id || index}
                 className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
+                data-category={project.category || "web"}
               >
                 {/* Project Image */}
                 <div className="relative h-48 overflow-hidden bg-gray-100">
-                  {" "}
-                  {/* Background color add karo */}
                   {projectImage && (
                     <div className="w-full h-full">
-                      {console.log(
-                        "Rendering image for project:",
-                        projectImage.src, // .src specifically log karo
-                        project.title
-                      )}
                       <Image
                         src={projectImage}
-                        alt="Project Image"
-                        width="95%"
-                        height="95%"
+                        alt={`${project.title} project image`}
+                        width={400}
+                        height={192}
                         className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                        priority={index < 3} // First 3 images ko priority do
                       />
                     </div>
                   )}
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-4 group-hover:translate-y-0">
                       {project.project_url && (
                         <a
@@ -164,9 +108,9 @@ export default function ProjectGrid({ userRole }) {
                   </p>
 
                   {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies &&
-                      project.technologies.map((tech, techIndex) => (
+                  {project.technologies && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.technologies.map((tech, techIndex) => (
                         <span
                           key={techIndex}
                           className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition duration-300"
@@ -174,7 +118,8 @@ export default function ProjectGrid({ userRole }) {
                           {tech}
                         </span>
                       ))}
-                  </div>
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="flex gap-3 pt-4 border-t border-gray-100">
@@ -199,37 +144,25 @@ export default function ProjectGrid({ userRole }) {
         </div>
 
         {/* No Projects Message */}
-        {filteredProjects.length === 0 && (
+        {displayProjects.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">
               No Projects Found
             </h3>
             <p className="text-gray-600">
-              No projects match the selected category.
+              No projects available at the moment.
             </p>
           </div>
         )}
 
-        {/* Admin Controls
+        {/* Admin Controls */}
         {userRole === "admin" && (
           <div className="text-center mt-12">
-            <button className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              ✨ Manage Projects
-            </button>
+            <ProjectAdminPanel projects={displayProjects} />
           </div>
-        )} */}
+        )}
       </div>
-
-      {/* Add custom styles for line clamp */}
-      <style jsx>{`
-        .line-clamp-3 {
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      `}</style>
     </section>
   );
 }

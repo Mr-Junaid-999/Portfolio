@@ -1,53 +1,29 @@
-"use client";
-import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-export default function ExperienceTimeline({ userRole }) {
-  const [experiences, setExperiences] = useState([]);
-  const [loading, setLoading] = useState(true);
+async function getExperiences() {
+  try {
+    const { data, error } = await supabase
+      .from("experience")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("experience")
-          .select("*")
-          .order("created_at", { ascending: false });
+    if (error) {
+      console.error("Error fetching experience:", error);
+      return [];
+    }
 
-        if (error) {
-          console.error("Error fetching experience:", error);
-          return;
-        }
+    return data || [];
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return [];
+  }
+}
 
-        if (data) {
-          setExperiences(data);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContent();
-  }, []);
+export default async function ExperienceTimeline({ userRole }) {
+  const experiences = await getExperiences();
 
   // Default data agar koi experience nahi hai
   const displayExperiences = experiences;
-
-  if (loading) {
-    return (
-      <section id="experience" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
-            Experience
-          </h2>
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="experience" className="py-20 bg-gray-50">

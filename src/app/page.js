@@ -1,5 +1,4 @@
-"use client";
-import { useState, useEffect } from "react";
+"use server";
 import { supabase } from "../../lib/supabase";
 import Navbar from "../../components/Layout/Navbar";
 import Footer from "../../components/Layout/Footer";
@@ -11,28 +10,36 @@ import SkillsSection from "../../components/Skills/SkillsSection";
 import TestimonialCarousel from "../../components/Testimonials/TestimonialCarousel";
 import ContactForm from "../../components/Contact/ContactForm";
 
-export default function Home() {
-  const [userRole, setUserRole] = useState("user");
+async function getUserRole() {
+  try {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from("users")
-          .select("role")
-          .eq("id", user.id)
-          .single();
+    if (userError || !user) {
+      return "user"; // Default role
+    }
 
-        if (data) {
-          setUserRole(data.role);
-        }
-      }
-    };
-    checkUserRole();
-  }, []);
+    const { data, error } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (error || !data) {
+      return "user"; // Default role
+    }
+
+    return data.role;
+  } catch (error) {
+    console.error("Error fetching user role:", error);
+    return "user"; // Default role on error
+  }
+}
+
+export default async function Home() {
+  const userRole = await getUserRole();
 
   return (
     <div className="min-h-screen">

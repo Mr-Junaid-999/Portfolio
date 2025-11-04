@@ -143,24 +143,14 @@ export default function Navbar() {
             ) : (
               <div className="flex space-x-3 gap-2">
                 <Link
-                  href="/signin"
-                  className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105 ${
-                    isScrolled
-                      ? "text-gray-700 hover:text-emerald-600 border border-gray-300 hover:border-emerald-400"
-                      : "text-white border border-white/30 hover:bg-white/10 hover:border-white/50"
-                  }`}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
+                  href="/#contact"
                   className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105 ${
                     isScrolled
                       ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg hover:shadow-emerald-200 hover:from-emerald-600 hover:to-teal-700"
                       : "bg-white text-emerald-600 shadow-lg hover:bg-emerald-50 hover:shadow-emerald-200"
                   }`}
                 >
-                  Sign Up
+                  Contact Us
                 </Link>
               </div>
             )}

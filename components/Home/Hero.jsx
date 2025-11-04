@@ -1,5 +1,3 @@
-// components/Home/Hero.jsx
-import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 import Image from "next/image";
 import Junaid from "../../public/JunaidHassan.jpg";
@@ -13,41 +11,44 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
-export default function Hero({ userRole }) {
-  const [content, setContent] = useState({
-    title: "Hi, I'm Junaid UL Hassan",
-    subtitle: "Full Stack Developer & UI/UX Enthusiast",
-    description:
-      "I create beautiful, functional, and user-centered digital experiences. With 2-year experience in web development, I bring ideas to life through clean code and thoughtful design.",
-    video_url: "",
-    available: true,
-  });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({});
+import HeroEditForm from "./HeroEditForm";
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      const { data, error } = await supabase
-        .from("home_content")
-        .select("*")
-        .single();
+async function getHomeContent() {
+  try {
+    const { data, error } = await supabase
+      .from("home_content")
+      .select("*")
+      .single();
 
-      if (data) {
-        setContent(data);
-        setEditData(data);
-      }
-    };
-    fetchContent();
-  }, []);
-
-  const handleSave = async () => {
-    const { error } = await supabase.from("home_content").upsert(editData);
-
-    if (!error) {
-      setContent(editData);
-      setIsEditing(false);
+    if (error) {
+      console.error("Error fetching home content:", error);
+      // Default content agar fetch na ho sake
+      return {
+        title: "Hi, I'm Junaid UL Hassan",
+        subtitle: "Full Stack Developer & UI/UX Enthusiast",
+        description:
+          "I create beautiful, functional, and user-centered digital experiences. With 2-year experience in web development, I bring ideas to life through clean code and thoughtful design.",
+        video_url: "",
+        available: true,
+      };
     }
-  };
+
+    return data;
+  } catch (error) {
+    console.error("Error in getHomeContent:", error);
+    return {
+      title: "Hi, I'm Junaid UL Hassan",
+      subtitle: "Full Stack Developer & UI/UX Enthusiast",
+      description:
+        "I create beautiful, functional, and user-centered digital experiences. With 2-year experience in web development, I bring ideas to life through clean code and thoughtful design.",
+      video_url: "",
+      available: true,
+    };
+  }
+}
+
+export default async function Hero({ userRole }) {
+  const content = await getHomeContent();
 
   return (
     <section
@@ -61,46 +62,18 @@ export default function Hero({ userRole }) {
           </div>
           Available for freelance work
         </div>
-        {isEditing && userRole === "admin" ? (
-          <div className="space-y-4">
-            <input
-              type="text"
-              value={editData.title}
-              onChange={(e) =>
-                setEditData({ ...editData, title: e.target.value })
-              }
-              className="w-full text-4xl font-bold text-center bg-transparent border-b-2 border-gray-300 focus:outline-none focus:border-indigo-500"
-            />
-            <input
-              type="text"
-              value={editData.subtitle}
-              onChange={(e) =>
-                setEditData({ ...editData, subtitle: e.target.value })
-              }
-              className="w-full text-xl text-gray-600 text-center bg-transparent border-b-2 border-gray-300 focus:outline-none focus:border-indigo-500"
-            />
-            <textarea
-              value={editData.description}
-              onChange={(e) =>
-                setEditData({ ...editData, description: e.target.value })
-              }
-              className="w-full text-lg text-gray-700 text-center bg-transparent border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-indigo-500"
-              rows="3"
-            />
-          </div>
-        ) : (
-          <div>
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
-              {content.title}
-            </h1>
-            <h2 className="text-xl md:text-2xl text-gray-600 mb-6">
-              {content.subtitle}
-            </h2>
-            <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-              {content.description}
-            </p>
-          </div>
-        )}
+
+        <div>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+            {content.title}
+          </h1>
+          <h2 className="text-xl md:text-2xl text-gray-600 mb-6">
+            {content.subtitle}
+          </h2>
+          <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+            {content.description}
+          </p>
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <div className="flex align-middle justify-center gap-2  bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium transition duration-300">
@@ -144,42 +117,15 @@ export default function Hero({ userRole }) {
           </Link>
         </div>
 
-        {userRole === "admin" && (
-          <div className="mt-8">
-            {!isEditing ? (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300"
-              >
-                Edit Content
-              </button>
-            ) : (
-              <div className="space-x-2">
-                <button
-                  onClick={handleSave}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditData(content);
-                  }}
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Admin edit functionality ke liye separate client component */}
+        {userRole === "admin" && <HeroEditForm initialContent={content} />}
       </div>
       <div className="max-w-4xl mx-auto px-4 text-center hidden lg:block">
         <Image
           src={Junaid}
           alt="Image"
           className="h-[65vh] w-[28vw] rounded-2xl"
+          priority
         />
       </div>
     </section>

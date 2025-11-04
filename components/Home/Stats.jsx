@@ -1,5 +1,4 @@
-"use client";
-export default function Stats() {
+export default async function Stats() {
   const stats = [
     { number: "2+", label: "Years Experience" },
     { number: "50+", label: "Projects Completed" },
