@@ -1,11 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import ChatApp from "../../public/ChatApp.png";
+import Creditsplit from "../../public/Creditsplit.png";
+import TaskZone from "../../public/TaskZone.png";
+import Image from "next/image";
 
 export default function ProjectGrid({ userRole }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("all");
+
+  const projectImages = [TaskZone, ChatApp, Creditsplit];
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -101,110 +107,95 @@ export default function ProjectGrid({ userRole }) {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => (
-            <div
-              key={project.id || index}
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
-            >
-              {/* Project Image */}
-              <div className="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600 overflow-hidden">
-                {project.image_url &&
-                project.image_url !== "/api/placeholder/400/250" ? (
-                  <img
-                    src={project.image_url}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white">
-                    <div className="text-center">
-                      <div className="text-4xl mb-2">
-                        {project.category === "web" && "🌐"}
-                        {project.category === "mobile" && "📱"}
-                        {project.category === "open-source" && "🔧"}
-                      </div>
-                      <p className="text-sm font-medium">{project.title}</p>
+          {filteredProjects.map((project, index) => {
+            // Har project ke liye different image select karo
+            const projectImage = projectImages[index % projectImages.length];
+
+            return (
+              <div
+                key={project.id || index}
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
+              >
+                {/* Project Image */}
+                <div className="relative h-48 overflow-hidden bg-gray-100">
+                  {" "}
+                  {/* Background color add karo */}
+                  {projectImage && (
+                    <div className="w-full h-full">
+                      {console.log(
+                        "Rendering image for project:",
+                        projectImage.src, // .src specifically log karo
+                        project.title
+                      )}
+                      <Image
+                        src={projectImage}
+                        alt="Project Image"
+                        width="95%"
+                        height="95%"
+                        className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                      />
+                    </div>
+                  )}
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      {project.project_url && (
+                        <a
+                          href={project.project_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition duration-300 shadow-lg"
+                        >
+                          View Project →
+                        </a>
+                      )}
                     </div>
                   </div>
-                )}
-
-                {/* Category Badge */}
-
-                <div className="absolute top-4 left-4">
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold text-white ${
-                      project.category === "web"
-                        ? "bg-green-500"
-                        : project.category === "mobile"
-                        ? "bg-blue-500"
-                        : "bg-purple-500"
-                    }`}
-                  >
-                    {project.category === "web" && "🌐 Web"}
-                    {project.category === "mobile" && "📱 Mobile"}
-                    {project.category === "open-source" && "🔧 Open Source"}
-                  </span>
                 </div>
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-4 group-hover:translate-y-0">
+                {/* Project Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition duration-300">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-gray-600 leading-relaxed mb-4 line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies &&
+                      project.technologies.map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition duration-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-4 border-t border-gray-100">
                     {project.project_url && (
                       <a
                         href={project.project_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition duration-300 shadow-lg"
+                        className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm"
                       >
-                        View Project →
+                        Live Demo
                       </a>
                     )}
+                    <button className="flex-1 bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-300 font-medium text-sm">
+                      Details
+                    </button>
                   </div>
                 </div>
               </div>
-
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition duration-300">
-                  {project.title}
-                </h3>
-
-                <p className="text-gray-600 leading-relaxed mb-4 line-clamp-3">
-                  {project.description}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies &&
-                    project.technologies.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition duration-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4 border-t border-gray-100">
-                  {project.project_url && (
-                    <a
-                      href={project.project_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm"
-                    >
-                      Live Demo
-                    </a>
-                  )}
-                  <button className="flex-1 bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-300 font-medium text-sm">
-                    Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* No Projects Message */}
@@ -220,14 +211,14 @@ export default function ProjectGrid({ userRole }) {
           </div>
         )}
 
-        {/* Admin Controls */}
+        {/* Admin Controls
         {userRole === "admin" && (
           <div className="text-center mt-12">
             <button className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
               ✨ Manage Projects
             </button>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Add custom styles for line clamp */}

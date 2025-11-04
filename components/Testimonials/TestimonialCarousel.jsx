@@ -341,13 +341,13 @@ export default function TestimonialCarousel({ userRole }) {
         </div>
 
         {/* Admin Controls */}
-        {userRole === "admin" && (
+        {/* {userRole === "admin" && (
           <div className="text-center mt-12">
             <button className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
               💬 Manage Testimonials
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </section>
   );
