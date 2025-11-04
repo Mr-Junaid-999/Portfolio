@@ -1,7 +1,7 @@
 import { supabase } from "../../lib/supabase";
-import ChatApp from "../../public/ChatApp.png";
-import Creditsplit from "../../public/Creditsplit.png";
-import TaskZone from "../../public/TaskZone.png";
+import ChatApp from "../ChatApp.png";
+import Creditsplit from "../Creditsplit.png";
+import TaskZone from "../TaskZone.png";
 import Image from "next/image";
 import ProjectFilters from "./ProjectFilters";
 import ProjectAdminPanel from "./ProjectAdminPanel";
