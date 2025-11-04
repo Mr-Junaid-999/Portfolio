@@ -1,3 +1,4 @@
+// components/Projects/ProjectGrid.jsx
 import { supabase } from "../../lib/supabase";
 import ChatApp from "../ChatApp.png";
 import Creditsplit from "../Creditsplit.png";
