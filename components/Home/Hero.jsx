@@ -120,14 +120,28 @@ export default async function Hero({ userRole }) {
         {/* Admin edit functionality ke liye separate client component */}
         {userRole === "admin" && <HeroEditForm initialContent={content} />}
       </div>
-      <div className="max-w-4xl mx-auto px-4 text-center hidden md:hidden lg:block  ">
+      {/* <div className="max-w-4xl  mx-auto px-4 text-center hidden md:hidden lg:block  ">
+        <Image src={Junaid} alt="Image" className=" rounded-2xl" priority />
+      </div> */}
+      <div className="max-w-4xl mx-auto px-4 text-center hidden md:hidden lg:block ">
         <Image
           src={Junaid}
           alt="Image"
-          className="h-[65vh] w-[28vw] rounded-2xl"
+          className="rounded-2xl object-contain max-h-[500px] w-auto mx-auto"
           priority
         />
       </div>
+      {/* <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
+          <Image
+            src={Junaid}
+            alt="Image"
+            className="object-contain"
+            fill
+            priority
+          />
+        </div>
+      </div> */}
     </section>
   );
 }
