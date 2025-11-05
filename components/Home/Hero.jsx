@@ -120,7 +120,7 @@ export default async function Hero({ userRole }) {
         {/* Admin edit functionality ke liye separate client component */}
         {userRole === "admin" && <HeroEditForm initialContent={content} />}
       </div>
-      <div className="max-w-4xl mx-auto px-4 text-center hidden lg:block">
+      <div className="max-w-4xl mx-auto px-4 text-center hidden md:hidden lg:block  ">
         <Image
           src={Junaid}
           alt="Image"

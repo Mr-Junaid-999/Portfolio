@@ -12,7 +12,7 @@ async function getExperiences() {
       return [];
     }
 
-    return data || [];
+    return data;
   } catch (err) {
     console.error("Unexpected error:", err);
     return [];
@@ -37,7 +37,7 @@ export default async function ExperienceTimeline({ userRole }) {
         </p>
 
         {/* Timeline Design */}
-        <div className="relative">
+        <div className="relative hidden lg:block">
           {/* Timeline line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-600 hidden lg:block"></div>
 
