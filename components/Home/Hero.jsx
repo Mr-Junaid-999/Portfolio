@@ -1,6 +1,6 @@
 import { supabase } from "../../lib/supabase";
+import HeroImage from "./Image";
 import Image from "next/image";
-import Junaid from "../../public/JunaidHassan.jpg";
 import { Dot } from "lucide-react";
 import {
   Linkedin,
@@ -21,7 +21,6 @@ async function getHomeContent() {
       .single();
 
     if (error) {
-      console.error("Error fetching home content:", error);
       // Default content agar fetch na ho sake
       return {
         title: "Hi, I'm Junaid UL Hassan",
@@ -53,10 +52,10 @@ export default async function Hero({ userRole }) {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 pt-35 lg:pt-4 pb-5 lg:pb-0"
+      className="min-h-screen flex flex-col-reverse md:flex-row  lg:flex-row items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 pt-35 lg:pt-8 pb-5 lg:pb-0"
     >
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="text-green-500 rounded-sm w-3xs bg-green-200 flex">
+      <div className="max-w-full md:max-w-[60%] lg:max-w-4xl mx-auto px-4 text-center ">
+        <div className="text-green-500 rounded-sm w-3xs bg-green-200 flex mt-10 md:mt-0 lg:mt-0 ">
           <div>
             <Dot className=" text-green-500" />
           </div>
@@ -64,14 +63,17 @@ export default async function Hero({ userRole }) {
         </div>
 
         <div>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
             {content.title}
           </h1>
-          <h2 className="text-xl md:text-2xl text-gray-600 mb-6">
-            {content.subtitle}
+          <h2 className="text-xl md:text-xl lg:text-2xl text-gray-600 mb-6">
+            Full-Stack Developer (Next.js / React)
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            {content.description}
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
+            Full-Stack Developer (Next.js / React) with 2 years of experience in
+            Next.js, React, and Supabase. Strong foundation in C++ and
+            Object-Oriented Programming, which helps me write efficient,
+            scalable backend logic.
           </p>
         </div>
 
@@ -120,28 +122,8 @@ export default async function Hero({ userRole }) {
         {/* Admin edit functionality ke liye separate client component */}
         {userRole === "admin" && <HeroEditForm initialContent={content} />}
       </div>
-      {/* <div className="max-w-4xl  mx-auto px-4 text-center hidden md:hidden lg:block  ">
-        <Image src={Junaid} alt="Image" className=" rounded-2xl" priority />
-      </div> */}
-      <div className="max-w-4xl mx-auto px-4 text-center hidden md:hidden lg:block ">
-        <Image
-          src={Junaid}
-          alt="Image"
-          className="rounded-2xl object-contain max-h-[500px] w-auto mx-auto"
-          priority
-        />
-      </div>
-      {/* <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
-          <Image
-            src={Junaid}
-            alt="Image"
-            className="object-contain"
-            fill
-            priority
-          />
-        </div>
-      </div> */}
+
+      <HeroImage />
     </section>
   );
 }
