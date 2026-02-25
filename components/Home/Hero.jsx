@@ -1,6 +1,4 @@
-import { supabase } from "../../lib/supabase";
 import HeroImage from "./Image";
-import Image from "next/image";
 import { Dot } from "lucide-react";
 import {
   Linkedin,
@@ -11,44 +9,8 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
-import HeroEditForm from "./HeroEditForm";
 
-async function getHomeContent() {
-  try {
-    const { data, error } = await supabase
-      .from("home_content")
-      .select("*")
-      .single();
-
-    if (error) {
-      // Default content agar fetch na ho sake
-      return {
-        title: "Hi, I'm Junaid UL Hassan",
-        subtitle: "Full Stack Developer & UI/UX Enthusiast",
-        description:
-          "I create beautiful, functional, and user-centered digital experiences. With 2-year experience in web development, I bring ideas to life through clean code and thoughtful design.",
-        video_url: "",
-        available: true,
-      };
-    }
-
-    return data;
-  } catch (error) {
-    console.error("Error in getHomeContent:", error);
-    return {
-      title: "Hi, I'm Junaid UL Hassan",
-      subtitle: "Full Stack Developer & UI/UX Enthusiast",
-      description:
-        "I create beautiful, functional, and user-centered digital experiences. With 2-year experience in web development, I bring ideas to life through clean code and thoughtful design.",
-      video_url: "",
-      available: true,
-    };
-  }
-}
-
-export default async function Hero({ userRole }) {
-  const content = await getHomeContent();
-
+export default async function Hero() {
   return (
     <section
       id="home"
@@ -64,7 +26,7 @@ export default async function Hero({ userRole }) {
 
         <div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
-            {content.title}
+            Hi, I'm Junaid UL Hassan
           </h1>
           <h2 className="text-xl md:text-xl lg:text-2xl text-gray-600 mb-6">
             Full-Stack Developer (Next.js / React)
@@ -118,9 +80,6 @@ export default async function Hero({ userRole }) {
             <Instagram className="w-5 h-5 cursor-pointer hover:text-pink-500" />
           </Link>
         </div>
-
-        {/* Admin edit functionality ke liye separate client component */}
-        {userRole === "admin" && <HeroEditForm initialContent={content} />}
       </div>
 
       <HeroImage />
