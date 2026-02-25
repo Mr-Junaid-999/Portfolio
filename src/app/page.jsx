@@ -12,35 +12,26 @@ import ContactForm from "../../components/Contact/ContactForm";
 
 async function getUserRole() {
   try {
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      return "user"; // Default role
-    }
-
     const { data, error } = await supabase
       .from("users")
       .select("role")
-      .eq("id", user.id)
+      .eq("email", "mr.junaidulhassan@gmail.com")
       .single();
 
-    if (error || !data) {
-      return "user"; // Default role
+    if (error) {
+      console.error("Error fetching user role:", error);
+      return; // Default role on error
     }
 
-    return data.role;
+    return data;
   } catch (error) {
     console.error("Error fetching user role:", error);
-    return "user"; // Default role on error
+    return; // Default role on error
   }
 }
 
 export default async function Home() {
   const userRole = await getUserRole();
-
   return (
     <div className="min-h-screen">
       <Navbar />

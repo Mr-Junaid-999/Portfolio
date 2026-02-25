@@ -181,13 +181,13 @@ async function getProjects() {
 
     if (error) {
       console.error("Error fetching projects:", error);
-      return [];
+      return;
     }
 
-    return data || [];
+    return data;
   } catch (err) {
     console.error("Unexpected error:", err);
-    return [];
+    return;
   }
 }
 
