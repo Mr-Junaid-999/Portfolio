@@ -1,67 +1,6 @@
-import { supabase } from "../../lib/supabase";
-import AboutEditForm from "./AboutEditForm";
+import React from "react";
 
-async function getAboutContent() {
-  try {
-    const { data, error } = await supabase
-      .from("about_content")
-      .select("*")
-      .single();
-
-    if (error) {
-      // Insert default content if not exists
-      return await insertDefaultContent();
-    }
-
-    if (data) {
-      return data;
-    } else {
-      // Insert default content if not exists
-      return await insertDefaultContent();
-    }
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    // Return default content on error
-    return {
-      bio: "I'm a passionate full-stack developer with expertise in modern web technologies...",
-      education: [],
-      skills_overview: "",
-    };
-  }
-}
-
-async function insertDefaultContent() {
-  try {
-    const defaultContent = {
-      bio: "I'm a passionate full-stack developer with expertise in modern web technologies. I love creating efficient, scalable, and user-friendly applications.",
-      education: [],
-      skills_overview: "",
-    };
-
-    const { data, error } = await supabase
-      .from("about_content")
-      .insert(defaultContent)
-      .select()
-      .single();
-
-    if (!error && data) {
-      return data;
-    }
-    return defaultContent;
-  } catch (error) {
-    console.error("Error inserting default content:", error);
-    return {
-      bio: "I'm a passionate full-stack developer with expertise in modern web technologies...",
-      education: [],
-      skills_overview: "",
-    };
-  }
-}
-
-export default async function AboutSection({ userRole }) {
-  const content = await getAboutContent();
-  console.log("userRole in AboutSection:", userRole);
-
+export default async function AboutSection() {
   return (
     <section
       id="about"
@@ -115,9 +54,6 @@ export default async function AboutSection({ userRole }) {
             Tailwind CSS, Git, Server Actions, REST APIs
           </p>
         </div>
-
-        {/* Admin Controls */}
-        {userRole === "admin" && <AboutEditForm initialContent={content} />}
       </div>
     </section>
   );
