@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Linkedin, Github, Mail, Phone, MapPin } from "lucide-react";
-
+// wenderfull
 export default function Footer() {
   return (
     <footer className="bg-[#102e27] text-white py-12">
