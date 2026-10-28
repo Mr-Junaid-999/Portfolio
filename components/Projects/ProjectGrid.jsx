@@ -1,169 +1,43 @@
-import { supabase } from "../../lib/supabase";
-import Image from "next/image";
-import ProjectFilters from "./ProjectFilters";
-import ProjectAdminPanel from "./ProjectAdminPanel";
+"use client";
+import { useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { projects } from "../../lib/portfolio-data";
+import ProjectCover from "./ProjectCover";
 
-async function getProjects() {
-  try {
-    const { data, error } = await supabase
-      .from("projects")
-      .select("*")
-      .order("created_at", { ascending: false });
+const filters = [
+  { id: "all", name: "All work" }, { id: "wordpress", name: "WordPress" },
+  { id: "nextjs", name: "Next.js" }, { id: "funnels", name: "Funnels" }, { id: "html", name: "HTML / CSS / JS" },
+];
 
-    if (error) {
-      console.error("Error fetching projects:", error);
-      return;
-    }
-
-    return data;
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return;
-  }
-}
-
-export default async function ProjectGrid({ userRole }) {
-  const projects = await getProjects();
-
-  // Public folder se direct image paths
-  const projectImages = [
-    "/Ecommerce.png",
-    "/TaskZone.png",
-    "/ChatApp.png",
-    "/CreditSplit.png",
-  ];
-
-  // Default projects agar koi data nahi hai
-  const displayProjects = projects;
+export default function ProjectGrid() {
+  const [active, setActive] = useState("all");
+  const visible = active === "all" ? projects : projects.filter((project) => project.category === active);
 
   return (
-    <section
-      id="projects"
-      className="py-20 bg-gradient-to-br from-gray-50 to-blue-50"
-    >
+    <section id="projects" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            My Projects
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            A collection of projects Ive worked on, showcasing my skills in web
-            development, mobile apps, and open-source contributions.
-          </p>
-
-          {/* Client-side Filters */}
-          <ProjectFilters />
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7 mb-10">
+          <div className="max-w-2xl"><p className="text-sm font-bold uppercase tracking-[0.2em] text-[#c58b55] mb-3">Selected work</p><h2 className="text-3xl md:text-5xl font-bold text-[#252923]">Projects across websites, funnels, and applications</h2></div>
+          <div className="flex flex-wrap gap-2">{filters.map((filter) => <button key={filter.id} type="button" onClick={() => setActive(filter.id)} className={`px-4 py-2 rounded-full text-sm font-bold border transition-colors ${active === filter.id ? "bg-[#173f35] text-white border-[#173f35]" : "bg-white text-[#60665d] border-[#d8d4c7] hover:border-[#173f35]"}`}>{filter.name}</button>)}</div>
         </div>
-
-        {/* Projects Grid - Server rendered */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayProjects.map((project, index) => {
-            // Har project ke liye different image select karo
-            const projectImage = projectImages[index % projectImages.length];
-
-            return (
-              <div
-                key={project.id || index}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
-                data-category={project.category || "web"}
-              >
-                {/* Project Image */}
-                <div className="relative h-48 overflow-hidden bg-gray-100">
-                  {projectImage && (
-                    <div className="w-full h-full">
-                      <Image
-                        src={projectImage}
-                        alt={`${project.title} project image`}
-                        width={400}
-                        height={192}
-                        className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
-                        priority={index < 3} // First 3 images ko priority do
-                      />
-                    </div>
-                  )}
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition duration-300 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition duration-300 transform translate-y-4 group-hover:translate-y-0">
-                      {project.project_url && (
-                        <a
-                          href={project.project_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-white text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition duration-300 shadow-lg"
-                        >
-                          View Project →
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Project Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-blue-600 transition duration-300">
-                    {project.title}
-                  </h3>
-
-                  <p className="text-gray-600 leading-relaxed mb-4 line-clamp-3">
-                    {project.description}
-                  </p>
-
-                  {/* Technologies */}
-                  {project.technologies && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-blue-100 hover:text-blue-700 transition duration-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-3 pt-4 border-t border-gray-100">
-                    {project.project_url && (
-                      <a
-                        href={project.project_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-sm"
-                      >
-                        Live Demo
-                      </a>
-                    )}
-                    <button className="flex-1 bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg hover:bg-gray-200 transition duration-300 font-medium text-sm">
-                      Details
-                    </button>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visible.map((project) => (
+            <article key={project.id} className="group border border-[#d8d4c7] rounded-md overflow-hidden bg-white hover:shadow-lg transition-shadow">
+              <ProjectCover
+                title={project.title}
+                label={project.coverLabel}
+                variant={project.coverVariant}
+              />
+              <div className="p-6">
+                {project.badge && <span className="inline-block mb-3 text-xs font-bold uppercase tracking-wider text-[#c58b55]">{project.badge}</span>}
+                <h3 className="text-xl font-bold text-[#252923] mb-2">{project.title}</h3>
+                <p className="text-[#60665d] leading-7 text-sm mb-5">{project.description}</p>
+                <div className="flex flex-wrap gap-2 mb-6">{project.technologies.map((technology) => <span key={technology} className="text-xs font-semibold text-[#454b42] bg-[#f7f5ef] px-2.5 py-1 rounded-full">{technology}</span>)}</div>
+                <a href={project.project_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#173f35] font-bold text-sm hover:text-[#c58b55]">{project.representativeUrl ? "View representative page" : "Visit website"}<ExternalLink size={15} /></a>
               </div>
-            );
-          })}
+            </article>
+          ))}
         </div>
-
-        {/* No Projects Message */}
-        {displayProjects.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">
-              No Projects Found
-            </h3>
-            <p className="text-gray-600">
-              No projects available at the moment.
-            </p>
-          </div>
-        )}
-
-        {/* Admin Controls */}
-        {userRole === "admin" && (
-          <div className="text-center mt-12">
-            <ProjectAdminPanel projects={displayProjects} />
-          </div>
-        )}
       </div>
     </section>
   );

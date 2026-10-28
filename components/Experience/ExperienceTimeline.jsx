@@ -1,32 +1,10 @@
-import { supabase } from "../../lib/supabase";
+import { experiences } from "../../lib/portfolio-data";
 
-async function getExperiences() {
-  try {
-    const { data, error } = await supabase
-      .from("experience")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching experience:", error);
-      return [];
-    }
-
-    return data;
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return [];
-  }
-}
-
-export default async function ExperienceTimeline({ userRole }) {
-  const experiences = await getExperiences();
-
-  // Default data agar koi experience nahi hai
+export default function ExperienceTimeline() {
   const displayExperiences = experiences;
 
   return (
-    <section id="experience" className="py-20 bg-gray-50">
+    <section id="experience" className="py-20 bg-[#f7f5ef]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">
           Professional Experience
@@ -39,7 +17,7 @@ export default async function ExperienceTimeline({ userRole }) {
         {/* Timeline Design */}
         <div className="relative hidden lg:block">
           {/* Timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-600 hidden lg:block"></div>
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-[#173f35] to-[#d9e4d9] hidden lg:block"></div>
 
           <div className="space-y-12">
             {displayExperiences.map((exp, index) => (
@@ -50,7 +28,7 @@ export default async function ExperienceTimeline({ userRole }) {
                 }`}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg z-10 hidden lg:block"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-[#173f35] rounded-full border-4 border-white shadow-lg z-10 hidden lg:block"></div>
 
                 {/* Content Card */}
                 <div
@@ -66,9 +44,9 @@ export default async function ExperienceTimeline({ userRole }) {
                           exp.type === "work"
                             ? "bg-green-100 text-green-800"
                             : exp.type === "internship"
-                            ? "bg-blue-100 text-blue-800"
+                            ? "bg-[#d9e4d9] text-[#173f35]"
                             : exp.type === "achievement"
-                            ? "bg-purple-100  text-purple-800"
+                            ? "bg-[#d9e4d9] text-[#173f35]"
                             : "bg-yellow-100 text-yellow-800"
                         }`}
                       >
@@ -89,7 +67,7 @@ export default async function ExperienceTimeline({ userRole }) {
                     <h3 className="text-xl font-bold text-gray-800 mb-2">
                       {exp.title}
                     </h3>
-                    <p className="text-lg font-semibold text-blue-600 mb-4 flex items-center">
+                    <p className="text-lg font-semibold text-[#173f35] mb-4 flex items-center">
                       <svg
                         className="w-4 h-4 mr-2"
                         fill="currentColor"
@@ -129,13 +107,13 @@ export default async function ExperienceTimeline({ userRole }) {
                     )}
 
                     {/* Hover effect border */}
-                    <div className="absolute inset-0 rounded-xl border-2 border-transparent hover:border-blue-200 transition-all duration-300 pointer-events-none"></div>
+                    <div className="absolute inset-0 rounded-xl border-2 border-transparent hover:border-[#d9e4d9] transition-all duration-300 pointer-events-none"></div>
                   </div>
                 </div>
 
                 {/* Date for mobile */}
                 <div className="lg:hidden w-full text-center mt-4">
-                  <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg inline-block">
+                  <div className="bg-[#d9e4d9] text-[#173f35] px-4 py-2 rounded-lg inline-block">
                     <span className="font-medium">{exp.period}</span>
                   </div>
                 </div>
@@ -157,9 +135,9 @@ export default async function ExperienceTimeline({ userRole }) {
                     exp.type === "work"
                       ? "bg-green-100 text-green-800"
                       : exp.type === "internship"
-                      ? "bg-blue-100 text-blue-800"
+                      ? "bg-[#d9e4d9] text-[#173f35]"
                       : exp.type === "achievement"
-                      ? "bg-purple-100  text-purple-800"
+                      ? "bg-[#d9e4d9] text-[#173f35]"
                       : "bg-yellow-100 text-yellow-800"
                   }`}
                 >
@@ -177,7 +155,7 @@ export default async function ExperienceTimeline({ userRole }) {
               <h3 className="text-xl font-bold text-gray-800 mb-2">
                 {exp.title}
               </h3>
-              <p className="text-lg font-semibold text-blue-600 mb-3">
+              <p className="text-lg font-semibold text-[#173f35] mb-3">
                 {exp.company}
               </p>
               <p className="text-gray-600 leading-relaxed">{exp.description}</p>
@@ -185,13 +163,6 @@ export default async function ExperienceTimeline({ userRole }) {
           ))}
         </div>
 
-        {/* {userRole === "admin" && (
-          <div className="text-center mt-12">
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Manage Experience
-            </button>
-          </div>
-        )} */}
       </div>
     </section>
   );

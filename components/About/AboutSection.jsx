@@ -1,59 +1,23 @@
-import React from "react";
-
-export default async function AboutSection() {
+export default function AboutSection() {
   return (
-    <section
-      id="about"
-      className="py-20 bg-gradient-to-br from-gray-50 to-blue-50"
-    >
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className=" mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
-            About Me
-          </h2>
-          <p className="text-lg md:text-xl lg:text-xl text-gray-600 max-w-6xl mx-auto   text-center">
-            <strong>Full-Stack Developer (Next.js / React / Node.js)</strong>{" "}
-            with a strong foundation in backend logic and system design. My
-            journey began with C++, where I developed multiple desktop
-            applications including School Management, Cafe Management, and Car
-            Rental systems. This early exposure to OOP concepts and complex
-            algorithms shaped my approach to writing clean, efficient, and
-            scalable code. <br />
-            In my current role as a <strong>Junior React Developer</strong>, I
-            work on both WordPress and Next.js projects. I develop custom
-            WordPress themes, while simultaneously building modern web
-            applications with Next.js 16 (App Router) and Supabase. <br />
-            <br />
-            <strong>Key Achievement:</strong>
+    <section id="about" className="py-20 bg-[#f7f5ef]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[0.75fr_1.25fr] gap-12 items-start">
+        <div>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-[#c58b55] mb-3">About</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-950 leading-tight">Direct communication, practical development</h2>
+        </div>
+        <div>
+          <p className="text-lg text-slate-700 leading-8 mb-6">
+            I am a Computer Science graduate with hands-on experience building Next.js and React applications, WordPress websites, GoHighLevel funnels, and SEO-focused content systems. My work includes full-stack storefront and dashboard functionality, REST API integration, and database-backed workflows.
           </p>
-          <ul className="text-lg md:text-xl lg:text-xl  list-disc list-inside mt-2 text-left max-w-6xl mx-auto text-gray-600">
-            <li>
-              Built a production-ready e-commerce platform from scratch using
-              Next.js 16, Supabase, and Server Actions.
-            </li>
-            <li>
-              Implemented complex business logic including multi-step order
-              processing, stock validation, and role-based authentication
-              (admin/customer).
-            </li>
-            <li>
-              Integrated Supabase for authentication, real-time database, and
-              file storage.
-            </li>
-            <li>
-              Developed custom admin dashboard with protected routes and
-              role-based access control.
-            </li>
-            <li>
-              Created RESTful API routes for file uploads and media management.
-            </li>
-          </ul>
-          <p className="text-lg md:text-xl lg:text-xl text-gray-600 max-w-6xl mx-auto text-start pt-5">
-            <strong>Technical Skills:</strong> Next.js, React, Node.js,
-            TypeScript (learning), Supabase, PostgreSQL, MongoDB , WordPress,
-            Tailwind CSS, Git, Server Actions, REST APIs
+          <p className="text-slate-600 leading-8 mb-8">
+            Clients work directly with me from the initial discussion through design, development, review, and delivery. You can expect clear scope, straightforward communication, and implementation tailored to the project rather than a one-size-fits-all template.
           </p>
+          <div className="grid sm:grid-cols-3 gap-4 border-y border-slate-200 py-6">
+            {[{ label: "Core stack", value: "Next.js, React, JavaScript" }, { label: "Web platforms", value: "WordPress, GoHighLevel" }, { label: "Growth services", value: "On-page SEO, Shopify" }].map((item) => (
+              <div key={item.label}><p className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">{item.label}</p><p className="font-semibold text-slate-800 text-sm">{item.value}</p></div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

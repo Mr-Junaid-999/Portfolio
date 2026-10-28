@@ -1,88 +1,37 @@
-import HeroImage from "./Image";
-import { Dot } from "lucide-react";
-import {
-  Linkedin,
-  Github,
-  Facebook,
-  Instagram,
-  Calendar,
-  MapPin,
-} from "lucide-react";
+import { ArrowDown, MapPin } from "lucide-react";
 import Link from "next/link";
 
-export default async function Hero() {
+export default function Hero() {
   return (
-    <section
-      id="home"
-      className="min-h-screen flex flex-col-reverse md:flex-row  lg:flex-row items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 pt-35 lg:pt-8 pb-5 lg:pb-0"
-    >
-      <div className="max-w-full md:max-w-[60%] lg:max-w-4xl mx-auto px-4 text-center ">
-        <div className="text-green-500 rounded-sm w-3xs bg-green-200 flex mt-10 md:mt-0 lg:mt-0 ">
-          <div>
-            <Dot className=" text-green-500" />
+    <section id="home" className="relative flex min-h-[680px] items-center overflow-hidden bg-[#f7f5ef] pb-16 pt-28">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-4xl border-l border-[#c9cbbf] pl-6 sm:pl-10">
+          <div className="mb-7 inline-flex items-center gap-2 text-sm font-semibold text-[#173f35]">
+            <span className="h-2 w-2 rounded-full bg-[#c58b55]" aria-hidden="true" />
+            Available for freelance work
           </div>
-          Available for freelance work
-        </div>
-
-        <div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
-            Hi, I'm Junaid UL Hassan
+          <h1 className="mb-7 max-w-[850px] text-4xl font-bold leading-[1.04] tracking-[-0.045em] text-[#252923] sm:text-6xl lg:text-[72px]">
+            Websites and digital marketing built for business growth
           </h1>
-          <h2 className="text-xl md:text-xl lg:text-2xl text-gray-600 mb-6">
-            Full-Stack Developer (Next.js / React)
-          </h2>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            Full-Stack Developer (Next.js / React) with 2 years of experience in
-            Next.js, React, and Supabase. Strong foundation in C++ and
-            Object-Oriented Programming, which helps me write efficient,
-            scalable backend logic.
+          <p className="mb-9 max-w-2xl text-lg leading-8 text-[#60665d] sm:text-xl">
+            I create focused websites, WordPress builds, GoHighLevel funnels, Shopify storefronts, Meta Ads campaigns, and SEO strategies for serious businesses.
           </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-          <div className="flex align-middle justify-center gap-2  bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium transition duration-300">
-            <MapPin className="w-5 h-5 text-white" />
-            <span>Lahore, Pakistan</span>
-          </div>
-          <div className="flex align-middle justify-center gap-2 border-2 border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg font-medium hover:cursor-pointer  transition duration-300">
-            <Calendar className="w-5 h-5 cursor-pointer hover:text-blue-600 " />
-            Available Now
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link href="/#contact" className="rounded-md bg-[#173f35] px-6 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#102e27] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#c58b55] active:bg-[#102e27]">
+              Discuss Your Project
+            </Link>
+            <Link href="/#projects" className="rounded-md border border-[#aeb4a5] bg-white px-6 py-3.5 text-center text-sm font-semibold text-[#252923] transition-colors hover:border-[#173f35] hover:bg-[#d9e4d9] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#c58b55] active:bg-[#c9d7c7]">
+              View My Work
+            </Link>
           </div>
         </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link
-            href={"/#projects"}
-            className="text-gray-700 hover:text-indigo-600 transition duration-300 font-medium"
-          >
-            View Projects
-          </Link>
-          <Link
-            href={"/#contact"}
-            className="bg-gray-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-900 transition duration-300"
-          >
-            Lets Work Together
-          </Link>
-        </div>
-
-        <div className="flex  gap-4 pt-8 justify-center items-center text-gray-600">
-          <span className="font-medium">Follow me:</span>
-          <Link href={"https://www.linkedin.com/in/junaid-hassan-58b272321/"}>
-            <Linkedin className="w-5 h-5 cursor-pointer hover:text-blue-600" />
-          </Link>
-          <Link href={"https://github.com/Mr-Junaid-999"}>
-            <Github className="w-5 h-5 cursor-pointer hover:text-black" />
-          </Link>
-          <Link href={"https://www.facebook.com/junaid.ulhassan.73997"}>
-            <Facebook className="w-5 h-5 cursor-pointer hover:text-blue-700" />
-          </Link>
-          <Link href={"https://www.instagram.com/mr_junaid_999.9/"}>
-            <Instagram className="w-5 h-5 cursor-pointer hover:text-pink-500" />
+        <div className="mt-12 flex flex-col gap-3 border-t border-[#d8d4c7] pt-5 text-sm text-[#60665d] sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2"><MapPin size={16} /> Lahore, Pakistan · Remote collaboration</div>
+          <Link href="/#services" className="inline-flex items-center gap-2 font-semibold text-[#173f35] transition-colors hover:text-[#c58b55] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#c58b55]">
+            Explore services <ArrowDown size={15} />
           </Link>
         </div>
       </div>
-
-      <HeroImage />
     </section>
   );
 }
