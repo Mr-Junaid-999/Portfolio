@@ -144,7 +144,7 @@ export default function ContactForm() {
               </div>
               <div className="flex items-center mb-2 gap-4 p-4 bg-white rounded-xl shadow-sm">
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600"><Phone className="w-6 h-6" /></div>
-                <div><p className="font-semibold text-[#252923]">Phone</p><p className="text-[#60665d]">+92 300 0115907</p></div>
+                <div><p className="font-semibold text-[#252923]">Phone</p><p className="text-[#60665d]">+92 333 6835907</p></div>
               </div>
               <div className="flex items-center mb-2 gap-4 p-4 bg-white rounded-xl shadow-sm">
                 <div className="w-12 h-12 bg-[#d9e4d9] rounded-lg flex items-center justify-center text-[#173f35]"><MapPin className="w-6 h-6" /></div>

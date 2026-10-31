@@ -1,5 +1,6 @@
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
+import FacebookPixel from "../../components/FacebookPixel";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -17,7 +18,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${inter.variable} min-h-screen`}>{children}</body>
+      <body className={`${manrope.variable} ${inter.variable} min-h-screen`}>
+        {children}
+        <FacebookPixel />
+      </body>
     </html>
   );
 }

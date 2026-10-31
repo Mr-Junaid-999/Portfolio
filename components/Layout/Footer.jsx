@@ -12,7 +12,7 @@ export default function Footer() {
             <div className="flex gap-4"><Link href="https://www.linkedin.com/in/junaid-hassan-58b272321/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={20} /></Link><Link href="https://github.com/Mr-Junaid-999" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={20} /></Link></div>
           </div>
           <div><h4 className="font-bold mb-4">Navigation</h4><div className="space-y-3 text-sm text-[#b7c2b2]"><Link className="block hover:text-white" href="/#services">Services</Link><Link className="block hover:text-white" href="/#projects">Projects</Link><Link className="block hover:text-white" href="/#about">About</Link><Link className="block hover:text-white" href="/#process">Process</Link></div></div>
-          <div><h4 className="font-bold mb-4">Contact</h4><div className="space-y-3 text-sm text-[#b7c2b2]"><p className="flex gap-2"><MapPin size={16} /> Lahore, Pakistan</p><p className="flex gap-2"><Phone size={16} /> +92 300 0115907</p><a className="flex gap-2 hover:text-white" href="mailto:mr.junaidulhassan@gmail.com"><Mail size={16} />mr.junaidulhassan@gmail.com</a></div></div>
+          <div><h4 className="font-bold mb-4">Contact</h4><div className="space-y-3 text-sm text-[#b7c2b2]"><p className="flex gap-2"><MapPin size={16} /> Lahore, Pakistan</p><p className="flex gap-2" ><Phone size={16} /> +92 333 6835907</p><a className="flex gap-2 hover:text-white" href="mailto:mr.junaidulhassan@gmail.com"><Mail size={16} />mr.junaidulhassan@gmail.com</a></div></div>
         </div>
         <div className="border-t border-[#315348] mt-10 pt-6 text-sm text-[#9aaa99]">© {new Date().getFullYear()} Junaid UL Hassan. All rights reserved.</div>
       </div>
