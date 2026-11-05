@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-[1.4fr_0.6fr_0.8fr] gap-10">
           <div>
-            <h3 className="text-xl font-bold mb-3">Junaid UL Hassan</h3>
+            <img src="/vercel.png" alt="Logo" className="w-15 h-10 mb-4" />            
             <p className="text-[#b7c2b2] max-w-md leading-7 mb-5">Web Developer & Digital Solutions Specialist providing website development, WordPress, GoHighLevel funnels, SEO, and Shopify services.</p>
             <div className="flex gap-4"><Link href="https://www.linkedin.com/in/junaid-hassan-58b272321/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Linkedin size={20} /></Link><Link href="https://github.com/Mr-Junaid-999" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Github size={20} /></Link></div>
           </div>

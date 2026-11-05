@@ -14,9 +14,9 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <AboutSection />
         <ServicesSection />
         <ProjectGrid />
-        <AboutSection />
         <ExperienceTimeline />
         <ProcessSection />
         <ContactForm />

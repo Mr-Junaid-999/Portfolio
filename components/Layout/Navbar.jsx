@@ -8,9 +8,9 @@ export default function Navbar() {
   const [active, setActive] = useState("#home");
 
   const links = [
+    { label: "About", href: "/#about", hash: "#about" },
     { label: "Services", href: "/#services", hash: "#services" },
     { label: "Work", href: "/#projects", hash: "#projects" },
-    { label: "About", href: "/#about", hash: "#about" },
     { label: "Experience", href: "/#experience", hash: "#experience" },
   ];
 
@@ -24,10 +24,13 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/15 bg-[#173F35] text-white">
       <nav aria-label="Primary navigation" className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center ">
+        <img src="/vercel.png" alt="Logo" className="w-15 h-10" />
         <Link href="/" className="leading-tight text-white" aria-label="Junaid UL Hassan home">
-          <span className="block text-lg font-bold">Junaid UL Hassan</span>
+          <span className=" hidden text-lg font-bold sm:block">Junaid UL Hassan</span>
           <span className="mt-0.5 hidden text-xs text-[#D9E4D9] sm:block">Web Developer & Digital Solutions Specialist</span>
         </Link>
+        </div>
 
         <div className="hidden items-center gap-7 lg:flex">
           {links.map((link) => (
